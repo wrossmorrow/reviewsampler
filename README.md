@@ -4,14 +4,13 @@ A simple node.js server to ("balanced-uniformly") sample from a list of reviews 
 
 ## Setup
 
-Obviously you need `node.js` and `npm` to handle this repo. Install by running
+### node Server
 
+Obviously you need `node.js` and `npm` to handle this repo. Install by running
 ```
 npm install
 ```
-
 in the repo directory. I run with
-
 ```
 $ ./reviewsampler.start
 ... do other stuff, until we need to stop with:
@@ -20,7 +19,7 @@ $ ./reviewsampler.stop
 
 ### SSL Certificates
 
-I used [Let'sEncrypt](https://letsencrypt.org/)'s free `[certbot](https://certbot.eff.org/)` tool to generate SSL certs that can be used for `HTTPS`. 
+I used [Let'sEncrypt](https://letsencrypt.org/)'s free [`certbot`](https://certbot.eff.org/) tool to generate SSL certs that can be used for `HTTPS`. 
 
 ### Apache
 
@@ -29,12 +28,20 @@ To run with apache, modify the `vhost.conf` and `vhost_ssl.conf` files by enteri
 ```
 $ sudo a2ensite vhost vhost_ssl
 ```
-
-You need to make sure the right modules are enabled with, e.g., 
+Or you can just replace the content in the default sites enabled for `HTTP` and `HTTPS`. You also need to make sure the right modules are enabled with, e.g., 
 
 ```
 $ sudo a2enmod ssl proxy proxy_http
 ```
+And, of course, restart `apache`
+```
+$ sudo systemctl restart apache2.service
+```
+and check for errors
+```
+$ sudo systemctl status apache2.service
+```
+
 
 ## Contact
 
