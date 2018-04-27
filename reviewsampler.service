@@ -16,7 +16,7 @@ StandardOutput=syslog
 StandardError=syslog
 WorkingDirectory=/home/ubuntu/reviewsampler
 ExecStart=/home/ubuntu/reviewsampler/reviewsampler.start
-PIDfile=/home/ubuntu/reviewsampler/reviewsampler.pid
+PIDFile=/home/ubuntu/reviewsampler/reviewsampler.pid
 ExecStop=/home/ubuntu/reviewsampler/reviewsampler.stop
 Restart=always
 
