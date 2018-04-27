@@ -66,6 +66,7 @@ Qualtrics.SurveyEngine.addOnload( function()
 			} );
 } );
 ```
+This example is provided in `qualtrics.js`. 
 
 ## Setup
 
