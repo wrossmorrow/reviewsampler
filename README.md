@@ -10,7 +10,7 @@ This server is setup to allow you to make (simple) API calls to
 2. Load a particular sheet by specifying a `spreadsheetId` and `range` (to be done _before_ launching an experiment)
 3. Specify a sampling method, the default being "balanced-uniform" (to be done, if desired, _before_ launching an experiment)
 4. Sample reviews one-by-one, returning data that can be used to construct questions in Qualtrics (_during_ experiment)
-5. Report client-side errors during question loads back to the experimenter
+5. Report client-side errors during question loads back to the experimenter (_during_ experiment)
 
 ### curl Examples
 
