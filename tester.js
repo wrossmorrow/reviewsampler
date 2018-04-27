@@ -188,6 +188,7 @@ app.get( '/get/sample' , ( req , res ) => ( res.json( [ Math.random() ] ) ) );
 // get an actual review (requires reviews loaded)
 app.get( '/get/review' , (req,res) => {
     var R = sampleReview();
+    console.log( "Sampled review: " + R );
     res.json( { Product : reviews[R][1] , Rating : reviews[R][2] , Review : reviews[R][3] , RowId : R } );
     counts[R]++;
 });
