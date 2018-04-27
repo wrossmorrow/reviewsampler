@@ -17,9 +17,22 @@ $ ./reviewsampler.start
 $ ./reviewsampler.stop
 ```
 
+Or, for production, use [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/). Make sure `reviewsampler.service` is correct for your deployment, copy into place with
+```
+$ sudo cp reviewsampler.service /etc/systemd/system
+```
+and reload/launch/enable: 
+```
+$ sudo systemd daemon-reload
+$ sudo systemd enable reviewsampler.service
+$ sudo systemd start reviewsampler.service
+$ sudo systemd status reviewsampler.service
+```
+Hopefully you don't hit errors. 
+
 ### SSL Certificates
 
-I used [Let'sEncrypt](https://letsencrypt.org/)'s free [`certbot`](https://certbot.eff.org/) tool to generate SSL certs that can be used for `HTTPS`. 
+I used [Let'sEncrypt](https://letsencrypt.org/)'s free [`certbot`](https://certbot.eff.org/) tool to generate SSL certs that can be used for `HTTPS`. Fairly easy to just follow the instructions. 
 
 ### Apache
 
@@ -41,7 +54,6 @@ and check for errors
 ```
 $ sudo systemctl status apache2.service
 ```
-
 
 ## Contact
 
