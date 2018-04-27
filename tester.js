@@ -170,7 +170,7 @@ app.post( '/strategy/:s' , ( req , res ) => {
 
 // get (text describing) the sampling strategy
 app.get( '/strategy' , ( req , res ) => {
-    switch( req.params.s ) { 
+    switch( strategy ) { 
         case 'u' : res.write( "Set to sample uniformly randomly." ).send();
         case 'b' : res.write( "Set to sample balanced-uniformly, up to a count of " + maxResponsesPerReview + " views." ).send();
         case 'e' : res.write( "Set to sample exponentially randomly, away from large counts." ).send();
