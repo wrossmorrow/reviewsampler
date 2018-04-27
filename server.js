@@ -43,23 +43,11 @@ app.use( _cors() );
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-// this is if we want to use strict CORS dugin the survey
+// this is IF we want to use strict CORS during the survey
 const corsOptions = {
     origin: "https://stanforduniversity.qualtrics.com" ,
     optionsSuccessStatus: 200
 };
-
-/*
-var sheets = google.sheets({
-    version : 'v4' ,
-    auth : 'AIzaSyAG7fd4bVeVArLG5c6m7uY3r8gG4pZ7yto'
-});
-
-var request = {
-    spreadsheetId : "1auTCGLVfoCad0qjFZy9VKvWrMGv5cwMo0ITp3efgJMY" ,
-    range : 'Sheet1!A2:D6' 
-};
-*/
 
 const logger = ( s ) => { console.log( ( new Date( Date.now() ).toISOString() ) + " | " + s ); }
 

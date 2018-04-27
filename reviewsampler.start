@@ -1,0 +1,6 @@
+#!/bin/bash 
+# reviewsampler.start
+
+T=$( date +"%FT%T" )
+node server.js 2> error-$T.log > info-$T.log & 
+echo $! > reviewsampler.pid

@@ -13,14 +13,15 @@ npm install
 in the repo directory. I run with
 
 ```
-$ node tester.js 2> error.log > info.log & 
-$ echo $! > run.pid
+$ ./reviewsampler.start
 ... do other stuff, until we need to stop with:
-$ kill $( cat run.pid )
+$ ./reviewsampler.stop
 ```
 
 ## Contact
 
 morrowwr@gmail.com
+
 wrossmorrow.com
+
 www.linkedin.com/in/wrossmorrow

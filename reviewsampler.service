@@ -1,0 +1,24 @@
+# systemd unit file for Review Sampler server
+#
+# place in /etc/systemd/system
+# systemctl enable reviewsampler.service
+# systemctl start reviewsampler.service
+
+[Unit]
+Description=Review Sampler Server for El-Dehaibi/MacDonald Product Review Analysis Survey
+After=network.target
+
+[Service]
+User=root
+Group=root
+Type=forking
+StandardOutput=syslog
+StandardError=syslog
+WorkingDirectory=/home/ubuntu/reviewsampler
+ExecStart=/home/ubuntu/reviewsampler/reviewsampler.start
+PIDfile=/home/ubuntu/reviewsampler/reviewsampler.pid
+ExecStop=/home/ubuntu/reviewsampler/reviewsampler.stop
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,4 @@
+#!/bin/bash 
+# reviewsampler.stop
+
+kill $( cat reviewsampler.pid )
