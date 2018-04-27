@@ -171,12 +171,10 @@ app.post( '/strategy/:s' , ( req , res ) => {
 // get (text describing) the sampling strategy
 app.get( '/strategy' , ( req , res ) => {
     switch( strategy ) { 
-        case 'u' : res.write( "Set to sample uniformly randomly." ).send();
-        case 'b' : res.write( "Set to sample balanced-uniformly, up to a count of " + maxResponsesPerReview + " views." ).send();
-        case 'e' : res.write( "Set to sample exponentially randomly, away from large counts." ).send();
-        case 'r' : res.write( "Set to sample reciprocally randomly, away from large counts." ).send();
-            res.send();
-            break;
+        case 'u' : res.write( "Set to sample uniformly randomly." ); res.send(); break;
+        case 'b' : res.write( "Set to sample balanced-uniformly, up to a count of " + maxResponsesPerReview + " views." ); res.send(); break;
+        case 'e' : res.write( "Set to sample exponentially randomly, away from large counts." ); res.send(); break;
+        case 'r' : res.write( "Set to sample reciprocally randomly, away from large counts." ); res.send(); break;
         default : 
             res.write( "Strategy code " + req.params.s + " not understood. Please use one of 'b', 'u', 'e', 'r'." )
             res.send();
