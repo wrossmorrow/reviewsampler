@@ -67,6 +67,7 @@ const sampleReview_u = function() {
         tmp = Math.random();
         if( tmp > maxS ) { maxS = tmp; R = i; }
     } );
+    return R;
 }
 
 const sampleReview_b = function() { 
@@ -75,6 +76,7 @@ const sampleReview_b = function() {
         tmp = Math.random() * ( 1.0 - Math.min( 1.0 , c/maxResponsesPerReview ) );
         if( tmp > maxS ) { maxS = tmp; R = i; }
     } );
+    return R;
 }
 
 const sampleReview_e = function() { 
@@ -83,6 +85,7 @@ const sampleReview_e = function() {
         tmp = Math.exp( - Math.random() * c );
         if( tmp > maxS ) { maxS = tmp; R = i; }
     } );
+    return R;
 }
 
 const sampleReview_r = function() { 
@@ -91,6 +94,7 @@ const sampleReview_r = function() {
         tmp = Math.random() / c;
         if( tmp > maxS ) { maxS = tmp; R = i; }
     } );
+    return R;
 }
 
 var sheets = undefined , 
