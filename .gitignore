@@ -2,6 +2,9 @@
 # don't track logs
 *.log
 
+# don't track PID files
+*.pid
+
 # don't track autosaved files
 *.*~
 
