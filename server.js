@@ -130,6 +130,13 @@ app.post( '/sheet/load' , ( req , res ) => {
     // that is, the request body (data) should contain the sheets request. 
 
     logger( "POST /sheet/load request for spreadsheet " + req.body.spreadsheetId + " and range " + req.body.range );
+
+    if( !sheets ) { 
+        res.write( "Cannot load a sheet before initializing Google API (POST to /sheets/init)" );
+        res.status(500).send();
+        return;
+    }
+
     sheets.spreadsheets.values.get( req.body , ( err , response ) => {
 
         // respond to caller based on status
@@ -175,7 +182,7 @@ app.get( '/strategy' , ( req , res ) => {
         case 'e' : res.write( "Set to sample exponentially randomly, away from large counts." ); res.send(); break;
         case 'r' : res.write( "Set to sample reciprocally randomly, away from large counts." ); res.send(); break;
         default : 
-            res.write( "Strategy code " + req.params.s + " not understood. Please use one of 'b', 'u', 'e', 'r'." )
+            res.write( "Strategy code " + req.params.s + " not understood." )
             res.send();
             break;
     }
@@ -184,18 +191,25 @@ app.get( '/strategy' , ( req , res ) => {
 // simple tester; return a uniform random sample (doesn't require reviews loaded)
 app.get( '/get/sample' , ( req , res ) => {
     logger( "GET  /get/sample request" );
-    logger( "/get/sample" );
     res.json( [ Math.random() ] ) 
 } ); 
 
 // get an actual review (requires reviews loaded)
 app.get( '/get/review' , (req,res) => {
+
+    if( reviews.length == 0 ) {
+        res.write( "Don't appear to have a reviews object to sample from yet." )
+        res.status(500).send();
+        return;
+    }
+
     reviewRequestCount += 1;
     logger( "GET  /get/review request " + reviewRequestCount );
     var R = sampleReview();
     logger( "GET  /get/review request " + reviewRequestCount + " sampled review " + reviews[R][0] );
     res.json( { ReviewId : reviews[R][0] , Product : reviews[R][1] , Rating : reviews[R][2] , Review : reviews[R][3] } );
     counts[R]++;
+
 });
 
 // get the vector of counts (debugging, basically)
