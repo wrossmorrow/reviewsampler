@@ -1,0 +1,9 @@
+
+# don't track logs
+*.log
+
+# don't track autosaved files
+*.*~
+
+# don't track node modules (use npm install after clone/pull)
+/node_modules
