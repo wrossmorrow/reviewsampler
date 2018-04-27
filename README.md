@@ -2,6 +2,17 @@
 
 A simple node.js server to ("balanced-uniformly") sample from a list of reviews in a Google Sheet. 
 
+## Use
+
+This server is setup to allow you to make (simple) API calls to 
+
+1. Initialize a Google Sheets API object with an API key (to be done _before_ launching an experiment)
+2. Load a particular sheet by specifying a `spreadsheetId` and `range` (to be done _before_ launching an experiment)
+3. Specify a sampling method, the default being "balanced-uniform" (to be done, if desired, _before_ launching an experiment)
+4. Sample reviews one-by-one, returning data that can be used to construct questions in Qualtrics (_during_ experiment)
+
+
+
 ## Setup
 
 ### node Server
