@@ -10,6 +10,7 @@ This server is setup to allow you to make (simple) API calls to
 2. Load a particular sheet by specifying a `spreadsheetId` and `range` (to be done _before_ launching an experiment)
 3. Specify a sampling method, the default being "balanced-uniform" (to be done, if desired, _before_ launching an experiment)
 4. Sample reviews one-by-one, returning data that can be used to construct questions in Qualtrics (_during_ experiment)
+5. Report client-side errors during question loads back to the experimenter
 
 ### curl Examples
 
@@ -40,7 +41,33 @@ $ curl https://my.server.com/reviewsampler/api/get/review
 {"ReviewId":"4241","Product":"Sweatshirt","Rating":"5","Review":"My favorite sweater, will buy more colors"}
 ```
 
-### javscript Fetch Examples
+### javscript Fetch Example
+
+I would only use `javascript` to get sampled reviews within Qualtrics questions. That is, I wouldn't use it to setup the data for the experiment. 
+
+For that use case, a sample call might look like 
+
+```
+Qualtrics.SurveyEngine.addOnload( function()
+{
+	var container = this.getQuestionTextContainer();
+    fetch( "https://my.server.com/reviewsampler/api/review" )
+    	.then( data => {
+    		// process data recieved as JSON data
+		  	data.json()
+		  		.then( json => ( 
+		  			// Replace question's text container with a custom format of the response 
+		  			container.innerHTML = "<ins>Question 1</ins><br><ul><li/><b>Product:</b> " + Product + " <br><li/><b>Rating:</b> " + Rating + "/5 stars <br><li/><b>Review:</b> " + Review + "</ul>";
+
+		  		) )
+          	} , error => {
+          		// Dump error, if we can, to the server. Otherwise we have no window into client-side errors. 
+          		var postOpt = { method : 'post', body : JSON.stringify( error ) };
+				fetch( "https://my.server.com/reviewsampler/api/error" , postOpt );
+          	} );
+
+} );
+```
 
 ## Setup
 

@@ -226,6 +226,12 @@ app.post( '/counts/reset' , (req,res) => {
     res.send(); 
 } );
 
+// naive error post back method
+app.post( '/error' , (req,res) => { 
+    logger( "POST /error request : " + JSON.stringify( req.body ) );
+    res.send(); 
+} );
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
