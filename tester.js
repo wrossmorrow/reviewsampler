@@ -61,6 +61,8 @@ var request = {
 };
 */
 
+const logger = ( s ) => { console.log( ( new Date( Date.now() ).toISOString() ) + " | " + s ); }
+
 const sampleReview_u = function() { 
     var R = 0 , maxS = -1.0 , tmp = 0.0;
     counts.forEach( (c,i) => {
@@ -102,7 +104,8 @@ var sheets = undefined ,
     counts = [] , 
     maxResponsesPerReview = 5 , 
     strategy = 'b' , 
-    sampleReview = sampleReview_b;
+    sampleReview = sampleReview_b , 
+    reviewRequestCount = 0;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
@@ -118,12 +121,13 @@ var sheets = undefined ,
 
 // a blank request to serve as info
 app.get( '/' , (req,res) => {
-    console.log( "/ request" );
+    logger( "GET  / request" );
     res.send("API server to return balanced-uniformly sampled reviews. "); 
 } );
 
 // load google sheets app using an API key passed in the request body (data)
 app.post( '/sheets/init' , ( req , res ) => {
+    logger( "POST /sheets/init request (apikey sent not logged)" );
     sheets = google.sheets( { version : 'v4' , auth : req.body.apikey } );
     res.send();
 }); 
@@ -137,6 +141,7 @@ app.post( '/sheet/load' , ( req , res ) => {
     //
     // that is, the request body (data) should contain the sheets request. 
 
+    logger( "POST /sheet/load request for spreadsheet " + req.body.spreadsheetId + " and range " + req.body.range );
     sheets.spreadsheets.values.get( req.body , ( err , response ) => {
 
         // respond to caller based on status
@@ -159,6 +164,7 @@ app.post( '/sheet/load' , ( req , res ) => {
 
 // set the sampling strategy
 app.post( '/strategy/:s' , ( req , res ) => {
+    logger( "POST /strategy request, change to " + req.params.s );
     switch( req.params.s ) { 
         case 'u' : strategy = req.params.s; sampleReview = sampleReview_u; break;
         case 'b' : strategy = req.params.s; sampleReview = sampleReview_b; break;
@@ -174,6 +180,7 @@ app.post( '/strategy/:s' , ( req , res ) => {
 
 // get (text describing) the sampling strategy
 app.get( '/strategy' , ( req , res ) => {
+    logger( "GET  /strategy request" );
     switch( strategy ) { 
         case 'u' : res.write( "Set to sample uniformly randomly." ); res.send(); break;
         case 'b' : res.write( "Set to sample balanced-uniformly, up to a count of " + maxResponsesPerReview + " views." ); res.send(); break;
@@ -187,22 +194,32 @@ app.get( '/strategy' , ( req , res ) => {
 });
 
 // simple tester; return a uniform random sample (doesn't require reviews loaded)
-app.get( '/get/sample' , ( req , res ) => ( res.json( [ Math.random() ] ) ) ); 
+app.get( '/get/sample' , ( req , res ) => {
+    logger( "GET  /get/sample request" );
+    logger( "/get/sample" );
+    res.json( [ Math.random() ] ) 
+} ); 
 
 // get an actual review (requires reviews loaded)
 app.get( '/get/review' , (req,res) => {
+    reviewRequestCount += 1;
+    logger( "GET  /get/review request " + reviewRequestCount );
     var R = sampleReview();
-    console.log( "Sampled review: " + R );
+    logger( "GET  /get/review request " + reviewRequestCount + " sampled review " + reviews[R][0] );
     res.json( { ReviewId : reviews[R][0] , Product : reviews[R][1] , Rating : reviews[R][2] , Review : reviews[R][3] } );
     counts[R]++;
 });
 
 // get the vector of counts (debugging, basically)
-app.get( '/counts' , (req,res) => { res.json(counts); } );
+app.get( '/counts' , (req,res) => { 
+    logger( "GET  /counts request " );
+    res.json(counts); 
+} );
 
 // reset the counts vector, in case we need to run multiple trials (for testing or otherwise)
 // over the same set of reviews. Same effect as reloading the set of reviews. 
 app.post( '/counts/reset' , (req,res) => { 
+    logger( "POST /counts/reset request " );
     for( var i = 0 ; i < reviews.length ; i++ ) { counts[i] = 0.0; }
     res.send(); 
 } );
@@ -215,7 +232,7 @@ app.post( '/counts/reset' , (req,res) => {
  * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 app.post( '/sample/0' , ( req , res ) => {
 
@@ -358,7 +375,7 @@ const sample3 = ( c , M=5 ) => {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 server = app.listen( app.get('port') );
-console.log( "listening on port " + app.get('port') );
+logger( "listening on port " + app.get('port') );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
