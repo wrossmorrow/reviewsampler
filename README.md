@@ -81,7 +81,11 @@ A generic route with a single sentence response. Useful for checking if the serv
 
 ### `/sheets/init` (`POST`)
 
-Initialize the Google API by providing your API key. You need to provide a request body of the form `{ "apiKey" : "..." }` with your API key. Right now, this does not do any error checking; for example, responding when the API key you provide is not valid. Be careful. 
+Initialize the Google API by providing your API key. You need to provide a request body of the form 
+```
+{ "apiKey" : "..." }
+``` 
+with your API key. Right now, this does not do any error checking; for example, responding when the API key you provide is not valid. Be careful. 
 
 ### `/sheet/load` (`POST`)
 
@@ -119,7 +123,7 @@ Reset the counts vector to all zeros, sizing based on the current spreadsheet.
 
 ### `/error` (`POST`)
 
-A "postback" routine to enable logging of client-side errors in a central location. 
+A "postback" routine to enable logging of client-side errors in a central location. The full request body is considered the "error" that occured on the client and submitted to the server. 
 
 ## Setup
 
