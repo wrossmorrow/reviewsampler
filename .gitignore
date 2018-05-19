@@ -10,3 +10,6 @@
 
 # don't track node modules (use npm install after clone/pull)
 /node_modules
+
+# don't track project files
+*sublime*

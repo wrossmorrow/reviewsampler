@@ -81,11 +81,17 @@ A generic route with a single sentence response. Useful for checking if the serv
 
 ### `/sheets/init` (`POST`)
 
-Initialize the Google API by providing your API key. 
+Initialize the Google API by providing your API key. You need to provide a request body of the form `{ "apiKey" : "..." }` with your API key. Right now, this does not do any error checking; for example, responding when the API key you provide is not valid. Be careful. 
 
 ### `/sheet/load` (`POST`)
 
-Load a spreadsheet's data by specifying its `spreadsheetId` and range. This reads the spreadsheet data into memory; if you change something in the spreadsheet that you want reflected in the sampled reviews, you need to reload the spreadsheet with this `POST` call. Loading destroyes the current counts vector, and creates a new one initialized to zeros. 
+Load a spreadsheet's data by specifying its `spreadsheetId` and range in the form of a request body
+```
+	{ "spreadsheetId" : "..." , "range" : "..." }
+```
+Make sure you specify the sheet name and provide valid _complete_ column and row range; that is, the upper, left-hand corner cell coordinates and the lower, right-hand corner cell coordinates. Both entries with both letters and numbers! 
+
+The resulting call reads the spreadsheet data into memory; if you change something in the spreadsheet that you want reflected in the sampled reviews, you need to reload the spreadsheet with this `POST` call. Loading destroyes the current counts vector, and creates a new one initialized to zeros. 
 
 ### `/strategy` (`GET`)
 
@@ -105,7 +111,7 @@ Sample a review; returns review data in a `json` packet.
 
 ### `/counts` (`GET`)
 
-Get the current counts vector (note: possibly large). 
+Get the current counts vector (note: this is possibly large). 
 
 ### `/counts/reset` (`POST`)
 
