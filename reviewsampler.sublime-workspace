@@ -1,0 +1,621 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"de",
+				"defaultProjects"
+			],
+			[
+				"Pro",
+				"ProjectReducer"
+			],
+			[
+				"autosto",
+				"autostopDefault"
+			],
+			[
+				"tabl",
+				"tableWidth"
+			],
+			[
+				"Submit",
+				"SubmitDialog"
+			],
+			[
+				"error",
+				"errorTextStyle"
+			],
+			[
+				"AirTableA",
+				"AirTableAuthorization"
+			],
+			[
+				"default",
+				"defaultInstance"
+			],
+			[
+				"instance",
+				"instanceOptions"
+			],
+			[
+				"defaul",
+				"defaultInstance"
+			],
+			[
+				"num",
+				"numberOfExperiments"
+			],
+			[
+				"Timeout",
+				"TimeoutError"
+			],
+			[
+				"current",
+				"currentBackend"
+			],
+			[
+				"finishe",
+				"finishedOn"
+			],
+			[
+				"include",
+				"includePreGameSurvey"
+			],
+			[
+				"pre",
+				"preSurveyURL"
+			],
+			[
+				"RadioButton",
+				"RadioButtonGroup"
+			],
+			[
+				"showMo",
+				"showMonitorsFor"
+			],
+			[
+				"Pay",
+				"PayoutView"
+			],
+			[
+				"station",
+				"stationNumberErrorText"
+			],
+			[
+				"final",
+				"finalPotAllocations"
+			],
+			[
+				"is",
+				"isItMyTurn"
+			],
+			[
+				"last",
+				"lastPositionX"
+			],
+			[
+				"fl",
+				"flexDirection"
+			],
+			[
+				"Ch",
+				"ChatEntryContainer"
+			],
+			[
+				"pl",
+				"playerNumber"
+			],
+			[
+				"background",
+				"backgroundColor"
+			],
+			[
+				"on",
+				"onTouchTap"
+			],
+			[
+				"TableRow",
+				"TableRowColumn"
+			],
+			[
+				"font",
+				"fontSize"
+			],
+			[
+				"a",
+				"accent2Color"
+			],
+			[
+				"getRan",
+				"getRandomTriple"
+			],
+			[
+				"text-",
+				"text-decoration"
+			],
+			[
+				"password",
+				"passwordErrorText"
+			],
+			[
+				"backgroun",
+				"background-color"
+			],
+			[
+				"LOCAL",
+				"LOCAL_GAME_START"
+			],
+			[
+				"too",
+				"tooltipPosition"
+			],
+			[
+				"number",
+				"numberOfPlayers"
+			],
+			[
+				"sess",
+				"sessionName"
+			],
+			[
+				"template",
+				"templateToEdit"
+			],
+			[
+				"start",
+				"startingPoints"
+			],
+			[
+				"Key",
+				"KeyboardArrowDown"
+			],
+			[
+				"connect",
+				"connectionHandler"
+			],
+			[
+				"data",
+				"dataparse"
+			],
+			[
+				"parse",
+				"parsesee"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "package.json",
+			"settings":
+			{
+				"buffer_size": 386,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/server/index.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/App.test.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/UncommonConfigs.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/ProjectReducer.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/ProjectEntry.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/server/us-west-2.json",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/StanfordIconButton.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/Thanks.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/Header.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/InstanceEntry.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/CostEstimator.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/constants.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/actions.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/AutostopEntry.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/DurationEntry.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/RequestDisplay.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/Sorry.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/CFForm.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/package.json",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/IntegerTextBlock.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/IntegerTextField.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/InventoryReducer.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/VolumeReducer.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/ErrorReducer.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/AuthReducer.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/InstanceReducer.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/AccessEntry.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/MultipleVolumeEntry.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/VolumeEntry.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/DescriptionField.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/App.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/public/index.html",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/server/policies.json",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/App.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfpolicy/index.html",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/README.md",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/server/cfform.env",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/server/cfform.stop",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/server/cfform.start",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/server/cfform.service",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/devEnvAuth.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/styles.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/MUITheme.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/server/conf.json",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/index.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/.gitignore",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/.env",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/notes/RSSComputeMeeting-3-28-2018.txt",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/index.css",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/StanfordSSORoot.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/devEnvAuth.json",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/Unauthorized.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/public/us-west-2.json",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/cfform/src/.env",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/ssoapp/src/index.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/ssoapp/src/App.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/.gitignore",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/lagunita/package.json",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/README.md",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/ssoapp/src/Unauthorized.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/lagunita/public/index.html",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/lagunita/.env",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/lagunita/index.cgi",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/lagunita/src/index.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/ssoapp/.env",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/server/conf.json",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/apache/apache2.conf.section",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/genrsakey.sh",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/ssoapp/index.cgi",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/rs4o/server/index.js",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/aws/aws4o/aws4o/__init__.py",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/aws/aws4o/README.md",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/aws/aws4o/bin/aws4o",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/aws/aws4o/aws4o/aws4o.py",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/aws/aws4o/setup.py",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/aws/aws4o/aws4o/version.py",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/aws/aws4o/bin/aws4o.py",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/aws/aws4o/aws4o/awsconsole_py36.py",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/aws/aws4o/aws4o/awsconsole_py27.py",
+		"/Users/morrowwr/Work/Projects/CIRCLERSS/cloudforest/s3bt/s3bt/crypt.py",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/run.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/paralleldemo_gpu_mandelbrot.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/normal_cdf_approximation.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/mcmds.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/main.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/main-expandednotation.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/main-clean.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/main_ind.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/gpumain.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/alimain.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/individual.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/lf_normal_cdf_approximation.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/matlab/as_normal_cdf_approximation.m",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/gpu/sim_one_household.cu",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/gpu/gputil-tester.cu",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/gpu/constantmem.cu",
+		"/Users/morrowwr/Work/Projects/Yurukoglu/matlabgpu/gpu/gputil-tester.c",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/autotester.wsgi",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/lambda/spcfe_fakeexp.py",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/conf.json",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/README.md",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/doc/spcfe.service",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/spcfelb.service",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/spcfelb_start.sh",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/spcfelb_stop.sh",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/spcfe.env",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/spcfelb.env",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/rsstest.sh",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/faker.sh",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/fakelaunch.py",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/fakelinks.py",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/tester.sh",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/lambda/spcfe-fakeexp.py",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/backend.js",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/server.js",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/webpack.config.server.js",
+		"/Users/morrowwr/Work/Projects/Simonson/choiceframing/simonson-framing/server/index.js",
+		"/Users/morrowwr/Work/Projects/Halevy/ABC/habc/clients/admin/src/components/ABCModal/ABCModal.js",
+		"/Users/morrowwr/Work/Projects/Halevy/ABC/habc/clients/admin/src/components/FinishedGameTable/FinishedGameTable.js",
+		"/Users/morrowwr/Work/Projects/Halevy/ABC/habc/clients/admin/src/components/App/App.js",
+		"/Users/morrowwr/Work/Projects/Halevy/ABC/habc/clients/admin/src/components/GameTable/GameTable.js",
+		"/Users/morrowwr/Work/Projects/Halevy/ABC/habc/clients/admin/src/components/Editor/Editor.js",
+		"/Users/morrowwr/Work/Projects/Halevy/ABC/habc/clients/admin/src/components/Root/Root.js",
+		"/Users/morrowwr/Work/Projects/Halevy/ABC/habc/clients/admin/package.json",
+		"/Users/morrowwr/Work/Projects/Halevy/ABC/habc/clients/admin/src/index.js",
+		"/Users/morrowwr/Work/Projects/Halevy/ABC/habc/clients/admin/src/reducers/admin.js",
+		"/Users/morrowwr/Work/Projects/Halevy/ABC/habc/clients/admin/src/components/LinkServer/LinkServer.js",
+		"/Users/morrowwr/Work/Projects/Halevy/ABC/habc/clients/admin/src/actions/admin.js"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"Stop",
+			"12",
+			"24",
+			"12",
+			"cluster",
+			"email",
+			"<CloudForest",
+			"_blank",
+			"parseInt",
+			".map",
+			"map",
+			"construct",
+			"StanfordRadio",
+			"CloudForest",
+			"console.log",
+			"needed",
+			"Menu",
+			"checking",
+			"multifactor_send",
+			"multifactor)send",
+			"crypt.",
+			"server",
+			"os.",
+			"hashlib",
+			"_rundec",
+			"_runenc",
+			"hmac",
+			"random.",
+			"getpass",
+			"base64.",
+			"re.",
+			"hashlib",
+			"hashling",
+			"threading",
+			"launch",
+			"req.body",
+			"launch",
+			"/sessions",
+			"Rfr",
+			"launch",
+			"base",
+			"links",
+			" e ",
+			"e ",
+			"= config",
+			" ;",
+			"delete",
+			"404",
+			"mylog",
+			"expact",
+			"launch",
+			"\"default\"",
+			"session s",
+			"delete a ",
+			"delete",
+			"test",
+			"config",
+			"Session",
+			"_handleSaveSessionFromTemplate",
+			"SessionStarter",
+			"endGame",
+			"monitor",
+			"t.value",
+			"handleStartClick",
+			"Link",
+			"ri.e",
+			"match",
+			"fetchG",
+			"link",
+			"actions.linkbusy",
+			"actons.linl",
+			"busylinks",
+			"PayoutView",
+			"Pay",
+			"export",
+			"props.actions",
+			"Viewer",
+			"delete",
+			"game",
+			"gameActions",
+			"toggleDelay",
+			"elay",
+			"_handleStartClick",
+			"<Link",
+			"Link",
+			"GameTemplates",
+			"Forward",
+			"session",
+			"SaveButt",
+			"saveButtonAction",
+			"Retart",
+			"channel_report_var",
+			"channel_topic_coverage",
+			"consumer_expected_topic",
+			"topic_var_expanded",
+			"\nfprintf( 'results: \\n' ), disp( times )",
+			"topic_var_expanded",
+			"channel_ideology",
+			"consumer_ideology",
+			"exp",
+			"channel_report_var",
+			"_handleStr\n_handleStart",
+			"_handleStr\n_handleStr",
+			"startGame",
+			"_handleEndClick",
+			"End",
+			"declareMove",
+			"move",
+			"saveGame",
+			"save",
+			"Start",
+			"Date.now()",
+			"move",
+			"saveGame",
+			".id",
+			"Chat",
+			"move",
+			".sh",
+			".on",
+			"move",
+			"playerNumber",
+			"fetchGames",
+			"maxRounds",
+			"rx",
+			"_toggleDistributeFinalPot",
+			"stop",
+			"experiment",
+			"-1"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"	{ ",
+			"REDUCE:: GAMES: ",
+			"ACTIONS:: ADMIN: ",
+			"	\n"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "package.json",
+					"settings":
+					{
+						"buffer_size": 386,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 3,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 27.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"",
+				"src/index.js"
+			],
+			[
+				"asf",
+				"node_modules/material-ui/svg-icons/notification/airline-seat-flat.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 172.0,
+	"status_bar_visible": true
+}

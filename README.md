@@ -73,6 +73,48 @@ Qualtrics.SurveyEngine.addOnload( function()
 ```
 This example is provided in `qualtrics.js`. 
 
+## Route Index
+
+### `/` (`GET`)
+
+A generic route with a single sentence response. Useful for checking if the server is working as expected. 
+
+### `/sheets/init` (`POST`)
+
+Initialize the Google API by providing your API key. 
+
+### `/sheet/load` (`POST`)
+
+Load a spreadsheet's data by specifying its `spreadsheetId` and range. This reads the spreadsheet data into memory; if you change something in the spreadsheet that you want reflected in the sampled reviews, you need to reload the spreadsheet with this `POST` call. Loading destroyes the current counts vector, and creates a new one initialized to zeros. 
+
+### `/strategy` (`GET`)
+
+Get the current sampling strategy. 
+
+### `/strategy/:c` (`POST`)
+
+Set the sampling strategy to the value of `c`. Valid values are: `u` (uniform), `b` (balanced-uniform), `e` (exponentially weighted), `r` (reciprocally weighted). 
+
+### `/get/sample` (`GET`)
+
+Sample a uniform random number. 
+
+### `/get/review` (`GET`)
+
+Sample a review; returns review data in a `json` packet. 
+
+### `/counts` (`GET`)
+
+Get the current counts vector (note: possibly large). 
+
+### `/counts/reset` (`POST`)
+
+Reset the counts vector to all zeros, sizing based on the current spreadsheet. 
+
+### `/error` (`POST`)
+
+A "postback" routine to enable logging of client-side errors in a central location. 
+
 ## Setup
 
 ### node Server
