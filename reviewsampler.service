@@ -14,10 +14,11 @@ Group=root
 Type=forking
 StandardOutput=syslog
 StandardError=syslog
-WorkingDirectory=/home/ubuntu/reviewsampler
-ExecStart=/home/ubuntu/reviewsampler/reviewsampler.start
-PIDFile=/home/ubuntu/reviewsampler/reviewsampler.pid
-ExecStop=/home/ubuntu/reviewsampler/reviewsampler.stop
+WorkingDirectory=/var/www/html/reviewsampler
+EnvironmentFile=/var/www/html/reviewsampler/reviewsampler.env
+ExecStart=/var/www/html/reviewsampler/reviewsampler.start
+PIDFile=/var/www/html/reviewsampler/reviewsampler.pid
+ExecStop=/var/www/html/reviewsampler/reviewsampler.stop
 Restart=always
 
 [Install]

@@ -1,4 +1,5 @@
 #!/bin/bash 
 # reviewsampler.stop
 
-kill $( cat reviewsampler.pid )
+kill $( cat ${REVIEWSAMPLER_HOME_DIR}/reviewsampler.pid )
+rm ${REVIEWSAMPLER_HOME_DIR}/reviewsampler.pid

@@ -1,6 +1,7 @@
 #!/bin/bash 
 # reviewsampler.start
 
-T=$( date +"%FT%T" )
-node server.js 2> error-$T.log > info-$T.log & 
-echo $! > reviewsampler.pid
+echo ${REVIEWSAMPLER_HOME_DIR}
+T=$( date +"%FT%T" | sed -n 's/:/-/gp' )
+node ${REVIEWSAMPLER_HOME_DIR}/lbserver.js 2> ${REVIEWSAMPLER_HOME_DIR}/error-$T.log > ${REVIEWSAMPLER_HOME_DIR}/info-$T.log & 
+echo $! > ${REVIEWSAMPLER_HOME_DIR}/reviewsampler.pid
