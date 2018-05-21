@@ -281,13 +281,12 @@ app.get( '/get/review' , (req,res) => {
     res.json( { ReviewId : reviews[R][0] , Product : reviews[R][1] , Rating : reviews[R][2] , Review : reviews[R][3] } );
 
     counts[R]++;
-
-    logger( logStream.write( ( new Date( Date.now() ).toISOString() )
+    logStream.write( ( new Date( Date.now() ).toISOString() )
                         + "|" + reqIP( req ) 
                         + "|" + R
                         + "|" + counts[R]
                         + "|" + reviewRequestCount
-                        + "\n" ) );
+                        + "\n" );
 
 });
 

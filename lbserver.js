@@ -433,12 +433,12 @@ if( _cluster.isMaster ) {
       res.json( { ReviewId : reviews[R][0] , Product : reviews[R][1] , Rating : reviews[R][2] , Review : reviews[R][3] } );
 
       // write to this process' log
-      logger( logStream.write( ( new Date( Date.now() ).toISOString() )
+      logStream.write( ( new Date( Date.now() ).toISOString() )
                           + "|" + reqIP( req ) 
                           + "|" + R
                           + "|" + counts[R] + 1           // we increment later
                           + "|" + reviewRequestCount + 1  // we increment later
-                          + "\n" ) );
+                          + "\n" );
 
       // notify the coordinator that we have sampled... to handle counts in different processes
       process.send( { action : 'sample' , row : R } );
@@ -546,7 +546,7 @@ if( _cluster.isMaster ) {
       openlog();
       for( var i = 0 ; i < reviews.length ; i++ ) { counts[i] = 0.0; }
     }
-    
+
   });
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
