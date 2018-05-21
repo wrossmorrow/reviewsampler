@@ -3,7 +3,6 @@
 
 HD=${REVIEWSAMPLER_HOME_DIR:-"./"}
 LD=${REVIEWSAMPLER_LOG_DIR:-"./"}
-LB=${REVIEWSAMPLER_LOAD_BALANCE:-false}
 
 if [[ -f ${HD}/reviewsampler.pid ]] ; then 
 	kill $( cat ${HD}/reviewsampler.pid )

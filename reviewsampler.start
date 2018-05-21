@@ -9,8 +9,6 @@ else
 	LB=true
 fi
 
-echo "\"${REVIEWSAMPLER_LOAD_BALANCE}\" ${LB}"
-
 T=$( date +"%FT%T" | sed -n 's/:/-/gp' )
 if ${LB} ; then
 	node ${HD}/lbserver.js 2> ${LD}/error-$T.log > ${LD}/info-$T.log & 

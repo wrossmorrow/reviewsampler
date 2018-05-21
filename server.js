@@ -190,7 +190,9 @@ app.post( '/sheet/load' , ( req , res ) => {
         storedSheetId = req.body.spreadsheetId;
 
         if( logStream ) { logStream.end(); logStream = undefined; }
-        logStream = _fs.createWriteStream( storedSheetId + "." + Date.now() + ".log" , { flags : 'a' } );
+        logStream = _fs.createWriteStream( process.env.REVIEWSAMPLER_LOG_DIR + "/" 
+                                                + storedSheetId + "." + Date.now() + ".log" , 
+                                            { flags : 'a' } );
 
         // actually load reviews and set counts vector
         reviews = Object.assign( [] , response.data.values );
@@ -245,7 +247,6 @@ app.get( '/get/sample' , ( req , res ) => {
 //      https://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
 //
 const reqIP = ( req ) => {
-    console.log( req.headers )
     return  ( req.headers 
                 ? ( 'x-forwarded-for' in req.headers 
                         ? req.headers['x-forwarded-for'].split(',').pop() 
@@ -301,7 +302,9 @@ app.get( '/counts' , (req,res) => {
 app.post( '/counts/reset' , (req,res) => { 
 
     if( logStream ) { logStream.end(); logStream = undefined; }
-    logStream = _fs.createWriteStream( storedSheetId + "." + Date.now() + ".log" , { flags : 'a' } );
+    logStream = _fs.createWriteStream( process.env.REVIEWSAMPLER_LOG_DIR + "/" 
+                                            + storedSheetId + "." + Date.now() + ".log" , 
+                                        { flags : 'a' } );
 
     logger( "POST /counts/reset request " );
     for( var i = 0 ; i < reviews.length ; i++ ) { counts[i] = 0.0; }
@@ -314,146 +317,6 @@ app.post( '/error' , (req,res) => {
     logger( "POST /error request : " + JSON.stringify( req.body ) );
     res.send(); 
 } );
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * 
- * OLD ROUTES...
- * 
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-app.post( '/sample/0' , ( req , res ) => {
-
-    console.log( ( new Date( Date.now() ) ).toISOString() + ": Server received a SAMPLE(0) request." );
-
-    var size = parseInt( req.body.size ) ,
-	trials = parseInt( req.body.trials )
-
-    var questions = new Array( size ) , frequency = new Array( size );
-    for( i = 0 ; i < size ; i++ ) {
-	questions[i] = i;
-	frequency[i] = new Array( size );
-	frequency[i].fill( 0.0 );
-    }
-
-    // var rng = new _rng('Example');
-
-    for( t = 0 ; t < trials ; t++ ) {
-	var r = Object.assign( [] , questions );
-	r.sort( () => ( .5 - Math.random() ) );
-	// r.sort( () => ( .5 - rng.uniform() ) );
-	// r = shuffle( r );
-	for( i = 0 ; i < size ; i++ ) {
-	    frequency[i][ r[i] ] += 1
-	}
-    }
-
-    for( i = 0 ; i < size ; i++ ) {
-	for( j = 0 ; j < size ; j++ ) {
-	    frequency[i][j] /= parseFloat( trials );
-	}
-    }
-
-    res.json( frequency );
-});
-
-
-app.post( '/sample/1' , ( req , res ) => {
-    console.log( ( new Date( Date.now() ) ).toISOString() + ": Server received a SAMPLE(1) request." );
-    var R = -1;
-    if( 'max' in req.body ) {
-	R = sample1_real( req.body.counts , M=req.body.max );
-    } else {
-	R = sample1_real( req.body.counts );
-    }
-    res.json( { index : R[0] } );
-});
-
-app.post( '/sample/2' , ( req , res ) => {
-    console.log( ( new Date( Date.now() ) ).toISOString() + ": Server received a SAMPLE(2) request." );
-    var R = -1;
-    if( 'max' in req.body ) {
-	R = sample2( req.body.counts , M=req.body.max );
-    } else {
-	R = sample2( req.body.counts );
-    }
-    res.json( { index : R[0] } );
-});
-
-app.post( '/sample/3' , ( req , res ) => {
-    console.log( ( new Date( Date.now() ) ).toISOString() + ": Server received a SAMPLE(3) request." );
-    var R = -1;
-    if( 'max' in req.body ) {
-	R = sample3( req.body.counts , M=req.body.max );
-    } else {
-	R = sample3( req.body.counts );
-    }
-    res.json( { index : R[0] } );
-});
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * 
- * ACTUAL CODES FOR SAMPLING (THAT COULD BE EMBEDDED IN QUALTRICS)
- * 
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-// If we need a shuffle routine... here's a simple example.
-//
-// https://bost.ocks.org/mike/shuffle/
-//
-// If you do this with arrays of objects, you need to use Object.assign( {} , x[.] )
-// to force deep copies instead of reference swapping.
-const shuffle = ( x ) => {
-    var m = x.length, t, i;
-    while ( m ) { // Pick a remaining element, and swap it with the current element.
-    i = Math.floor( Math.random() * m-- );
-    t = x[m]; x[m] = x[i]; x[i] = t;
-    }
-    return x;
-}
-
-const sample1 = ( c , M=5 ) => {
-    var R = 0 , maxS = -1.0 , m = parseFloat(M) , tmp = 0.0;
-    c.forEach( (c_r,r) => {
-	tmp = Math.random() * ( 1.0 - Math.min( 1.0 , c_r/m ) );
-	if( tmp > maxS ) { maxS = tmp; R = r; }
-    } );
-    return R;
-};
-
-const sample1_real = ( c , M=5 ) => {
-    var R = 0 , I = -1 , maxS = -1.0 , m = parseFloat(M) , tmp = 0.0;
-    c.forEach( (c_r,r) => { // these c_r's are themselves arrays... c = [ [ count , unique_id ] , ... ]
-	tmp = Math.random() * ( 1.0 - Math.min( 1.0 , c_r[0]/m ) );
-	if( tmp > maxS ) { maxS = tmp; R = r; I = c_r[1]; }
-    } );
-    return [R,I];
-};
-
-const sample2 = ( c , M=5 ) => {
-    var R = 0 , maxS = -1.0 , m = parseFloat(M) , tmp = 0.0 ;
-    c.forEach( (c_r,r) => {
-	tmp = Math.exp( - Math.random() * c_r );
-	if( tmp > maxS ) { maxS = tmp; R = r; }
-    } );
-    return R;
-};
-
-const sample3 = ( c , M=5 ) => {
-    var R = 0 , maxS = -1.0 , m = parseFloat(M) , tmp = 0.0 ;
-    c.forEach( (c_r,r) => {
-	tmp = Math.random() / c_r;
-	if( tmp > maxS ) { maxS = tmp; R = r; }
-    } );
-    return R;
-};
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
