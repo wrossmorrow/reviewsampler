@@ -1,6 +1,7 @@
 
 # don't track logs
 *.log
+test/*.log
 
 # don't track PID files
 *.pid
