@@ -2,7 +2,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * 
- *  reviewsampler API server: sampler methods
+ *  reviewsampler API server: single-thread server
  *
  *  Copyright 2018 William Ross Morrow
  *
@@ -123,9 +123,40 @@ var sheets = undefined ,
     sampleReview = sampleReview_b , 
     reviewRequestCount = 0 ;
 
-const cleanup = () => {
-    if( logStream ) { logStream.end(); logStream = undefined; }
+const openlog = () => {
+    logStream = _fs.createWriteStream( process.env.REVIEWSAMPLER_LOG_DIR + "/" 
+                                                + storedSheetId + "." + Date.now() + ".log" , 
+                                            { flags : 'a' } );
 };
+
+const closelog = () => {
+    if( logStream ) { logStream.end(); logStream = undefined; }
+}
+
+const cleanup = () => {
+    closelog();
+};
+
+// get a request's IP address. From 
+//
+//      https://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
+//
+const reqIP = ( req ) => {
+    return  ( req.headers 
+                ? ( 'x-forwarded-for' in req.headers 
+                        ? req.headers['x-forwarded-for'].split(',').pop() 
+                        : undefined )
+                : undefined ) || 
+            ( req.connection 
+                ? req.connection.remoteAddress || 
+                    ( req.connection.socket
+                        ? req.connection.socket.remoteAddress 
+                        : undefined )
+                : undefined ) || 
+            ( req.socket 
+                ? req.socket.remoteAddress
+                : undefined );
+}
 
 // do app specific cleaning before exiting
 process.on('exit', () => ( cleanup() ) );
@@ -189,10 +220,8 @@ app.post( '/sheet/load' , ( req , res ) => {
 
         storedSheetId = req.body.spreadsheetId;
 
-        if( logStream ) { logStream.end(); logStream = undefined; }
-        logStream = _fs.createWriteStream( process.env.REVIEWSAMPLER_LOG_DIR + "/" 
-                                                + storedSheetId + "." + Date.now() + ".log" , 
-                                            { flags : 'a' } );
+        closelog();
+        openlog();
 
         // actually load reviews and set counts vector
         reviews = Object.assign( [] , response.data.values );
@@ -236,33 +265,6 @@ app.get( '/strategy' , ( req , res ) => {
     }
 });
 
-// simple tester; return a uniform random sample (doesn't require reviews loaded)
-app.get( '/get/sample' , ( req , res ) => {
-    logger( "GET  /get/sample request" );
-    res.json( [ Math.random() ] ) 
-} ); 
-
-// get a request's IP address. From 
-//
-//      https://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
-//
-const reqIP = ( req ) => {
-    return  ( req.headers 
-                ? ( 'x-forwarded-for' in req.headers 
-                        ? req.headers['x-forwarded-for'].split(',').pop() 
-                        : undefined )
-                : undefined ) || 
-            ( req.connection 
-                ? req.connection.remoteAddress || 
-                    ( req.connection.socket
-                        ? req.connection.socket.remoteAddress 
-                        : undefined )
-                : undefined ) || 
-            ( req.socket 
-                ? req.socket.remoteAddress
-                : undefined );
-}
-
 // get an actual review (requires reviews loaded)
 app.get( '/get/review' , (req,res) => {
 
@@ -278,12 +280,10 @@ app.get( '/get/review' , (req,res) => {
     logger( "GET  /get/review request " + reviewRequestCount + " sampled review " + reviews[R][0] );
     res.json( { ReviewId : reviews[R][0] , Product : reviews[R][1] , Rating : reviews[R][2] , Review : reviews[R][3] } );
 
-    var ip = reqIP( req );
-
     counts[R]++;
 
     logger( logStream.write( ( new Date( Date.now() ).toISOString() )
-                        + "|" + ip 
+                        + "|" + reqIP( req ) 
                         + "|" + R
                         + "|" + counts[R]
                         + "|" + reviewRequestCount
@@ -301,10 +301,8 @@ app.get( '/counts' , (req,res) => {
 // over the same set of reviews. Same effect as reloading the set of reviews. 
 app.post( '/counts/reset' , (req,res) => { 
 
-    if( logStream ) { logStream.end(); logStream = undefined; }
-    logStream = _fs.createWriteStream( process.env.REVIEWSAMPLER_LOG_DIR + "/" 
-                                            + storedSheetId + "." + Date.now() + ".log" , 
-                                        { flags : 'a' } );
+    closelog();
+    openlog();
 
     logger( "POST /counts/reset request " );
     for( var i = 0 ; i < reviews.length ; i++ ) { counts[i] = 0.0; }

@@ -8,3 +8,5 @@ if [[ -f ${HD}/reviewsampler.pid ]] ; then
 	kill $( cat ${HD}/reviewsampler.pid )
 	rm ${HD}/reviewsampler.pid
 fi
+
+for f in ${LD}/*.log ; do gzip $f ; done

@@ -2,7 +2,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * 
- *  reviewsampler API server: sampler methods
+ *  reviewsampler API server: multi-thread server (coordinator and servers)
  *
  *  Copyright 2018 William Ross Morrow
  *
@@ -199,6 +199,7 @@ if( _cluster.isMaster ) {
   const _bodyParser = require( 'body-parser' );
   const _cors = require( 'cors' );
   const _rng = require( 'rng-js' );
+  const _fs = require( 'fs' );
   const { google } = require( 'googleapis' );
 
   // out own samplers
@@ -241,6 +242,8 @@ if( _cluster.isMaster ) {
 
   // set defaults
   var sheets = undefined , 
+      storedSheetId = undefined , 
+      logStream = undefined ,
       reviews = [] , 
       counts = [] , 
       maxResponsesPerReview = 5 , 
@@ -250,6 +253,48 @@ if( _cluster.isMaster ) {
   // set the actual map
   var sampleReview = _samplers[strategy].smpl;
   var sampleParams = { maxCount : maxResponsesPerReview };
+
+  const openlog = () => {
+      return _fs.createWriteStream( process.env.REVIEWSAMPLER_LOG_DIR + "/" 
+                                                  + storedSheetId + "." 
+                                                  + process.env.PROCESS_EXPRESS_PORT + "."
+                                                  + Date.now() + ".log" , 
+                                              { flags : 'a' } );
+  };
+
+  const cleanup = () => {
+    if( logStream ) { logStream.end(); logStream = undefined; }
+  };
+
+  // get a request's IP address. From 
+  //
+  //      https://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
+  //
+  const reqIP = ( req ) => {
+      return  ( req.headers 
+                  ? ( 'x-forwarded-for' in req.headers 
+                          ? req.headers['x-forwarded-for'].split(',').pop() 
+                          : undefined )
+                  : undefined ) || 
+              ( req.connection 
+                  ? req.connection.remoteAddress || 
+                      ( req.connection.socket
+                          ? req.connection.socket.remoteAddress 
+                          : undefined )
+                  : undefined ) || 
+              ( req.socket 
+                  ? req.socket.remoteAddress
+                  : undefined );
+  }
+
+  // do app specific cleaning before exiting
+  process.on('exit', () => ( cleanup() ) );
+
+  // catch ctrl+c event and exit normally
+  process.on('SIGINT', () => ( cleanup() ) );
+
+  //catch uncaught exceptions, trace, then exit normally
+  process.on( 'uncaughtException' , () => ( cleanup() ) );
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
@@ -387,6 +432,14 @@ if( _cluster.isMaster ) {
       // respond to caller with review
       res.json( { ReviewId : reviews[R][0] , Product : reviews[R][1] , Rating : reviews[R][2] , Review : reviews[R][3] } );
 
+      // write to this process' log
+      logger( logStream.write( ( new Date( Date.now() ).toISOString() )
+                          + "|" + reqIP( req ) 
+                          + "|" + R
+                          + "|" + counts[R] + 1           // we increment later
+                          + "|" + reviewRequestCount + 1  // we increment later
+                          + "\n" ) );
+
       // notify the coordinator that we have sampled... to handle counts in different processes
       process.send( { action : 'sample' , row : R } );
 
@@ -450,6 +503,11 @@ if( _cluster.isMaster ) {
           if( error ) { process.send( { error : 'load' , message : error } ); }
           else {
 
+            storedSheetId = req.body.spreadsheetId;
+
+            closelog();
+            openlog();
+
             // _actually_ load reviews and set counts vector
             reviews = Object.assign( [] , response.data.values );
             counts = new Array( reviews.length );
@@ -484,9 +542,11 @@ if( _cluster.isMaster ) {
 
     // handle coordinated requests to reset counts
     if( msg.action === "reset" ) {
+      closelog();
+      openlog();
       for( var i = 0 ; i < reviews.length ; i++ ) { counts[i] = 0.0; }
     }
-
+    
   });
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
