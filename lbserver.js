@@ -115,7 +115,7 @@ if( _cluster.isMaster ) {
       // handle errors... TBD
       if( msg.error ) {
 
-
+        logger( "ERROR :: " + msg.message );
 
       }
 
