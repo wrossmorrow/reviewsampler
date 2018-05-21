@@ -496,6 +496,8 @@ if( _cluster.isMaster ) {
     // handle coordinated requests to load data from a spreadsheet
     if( msg.action === "load" ) {
 
+      logger( JSON.stringify( msg ) );
+
       sheets.spreadsheets.values.get( { spreadsheetId : msg.spreadsheetId , range : msg.range } , 
                                       ( error , response ) => {
 
