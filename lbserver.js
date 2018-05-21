@@ -505,7 +505,7 @@ if( _cluster.isMaster ) {
           if( error ) { process.send( { error : 'load' , message : error } ); }
           else {
 
-            storedSheetId = req.body.spreadsheetId;
+            storedSheetId = msg.spreadsheetId;
 
             closelog();
             openlog();
