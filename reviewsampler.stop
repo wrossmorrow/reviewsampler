@@ -1,5 +1,11 @@
 #!/bin/bash 
 # reviewsampler.stop
 
-kill $( cat ${REVIEWSAMPLER_HOME_DIR}/reviewsampler.pid )
-rm ${REVIEWSAMPLER_HOME_DIR}/reviewsampler.pid
+HD=${REVIEWSAMPLER_HOME_DIR:-"./"}
+LD=${REVIEWSAMPLER_LOG_DIR:-"./"}
+LB=${REVIEWSAMPLER_LOAD_BALANCE:-false}
+
+if [[ -f ${HD}/reviewsampler.pid ]] ; then 
+	kill $( cat ${HD}/reviewsampler.pid )
+	rm ${HD}/reviewsampler.pid
+fi

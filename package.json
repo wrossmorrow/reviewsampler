@@ -1,10 +1,13 @@
 {
-   "name": "reviewsurvey",
+   "name": "reviewsampler",
    "version": "1.0.0",
    "description": "",
    "main": "tester.js",
+   "repository": "https://github.com/wrossmorrow/reviewsampler",
    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+      "test"  : "echo \"Error: no test specified\" && exit 1" , 
+      "start" : "REVIEWSAMPLER_HOME_DIR=./ ./reviewsampler.start" ,
+      "stop"  : "REVIEWSAMPLER_HOME_DIR=./ ./reviewsampler.stop"
    },
    "author": "",
    "license": "ISC",

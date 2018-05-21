@@ -1,7 +1,20 @@
 #!/bin/bash 
 # reviewsampler.start
 
-echo ${REVIEWSAMPLER_HOME_DIR}
+HD=${REVIEWSAMPLER_HOME_DIR:-"./"}
+LD=${REVIEWSAMPLER_LOG_DIR:-"./"}
+if [[ -z ${REVIEWSAMPLER_LOAD_BALANCE} ]] ; then 
+	LB=false 
+else 
+	LB=true
+fi
+
+echo "\"${REVIEWSAMPLER_LOAD_BALANCE}\" ${LB}"
+
 T=$( date +"%FT%T" | sed -n 's/:/-/gp' )
-node ${REVIEWSAMPLER_HOME_DIR}/lbserver.js 2> ${REVIEWSAMPLER_HOME_DIR}/error-$T.log > ${REVIEWSAMPLER_HOME_DIR}/info-$T.log & 
-echo $! > ${REVIEWSAMPLER_HOME_DIR}/reviewsampler.pid
+if ${LB} ; then
+	node ${HD}/lbserver.js 2> ${LD}/error-$T.log > ${LD}/info-$T.log & 
+else 
+	node ${HD}/server.js 2> ${LD}/error-$T.log > ${LD}/info-$T.log & 
+fi
+echo $! > ${HD}/reviewsampler.pid

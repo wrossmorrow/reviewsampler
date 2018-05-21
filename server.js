@@ -1,3 +1,26 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * 
+ *  reviewsampler API server: sampler methods
+ *
+ *  Copyright 2018 William Ross Morrow
+ *
+ *  Licensed under a modified Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       https://github.com/wrossmorrow/reviewsampler/LICENSE.md
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ * 
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
@@ -13,6 +36,7 @@ const _express = require( 'express' );
 const _bodyParser = require( 'body-parser' );
 const _cors = require( 'cors' );
 const _rng = require( 'rng-js' );
+const _fs = require( 'fs' );
 const { google } = require( 'googleapis' );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
@@ -60,10 +84,12 @@ const sampleReview_u = function() {
     return R;
 }
 
+var maxCount = 0;
 const sampleReview_b = function() { 
-    var R = 0 , maxS = -1.0 , tmp = 0.0;
+    var R = 0 , maxS = -1.0 , tmp = 0.0 , localMax = Math.max( maxCount , maxResponsesPerReview );
     counts.forEach( (c,i) => {
-        tmp = Math.random() * ( 1.0 - Math.min( 1.0 , c/maxResponsesPerReview ) );
+        if( c > maxCount ) { maxCount = c; }
+        tmp = Math.random() * ( 1.0 - Math.min( 1.0 , c/localMax ) );
         if( tmp > maxS ) { maxS = tmp; R = i; }
     } );
     return R;
@@ -88,12 +114,27 @@ const sampleReview_r = function() {
 }
 
 var sheets = undefined , 
+    storedSheetId = undefined , 
+    logStream = undefined ,
     reviews = [] , 
     counts = [] , 
     maxResponsesPerReview = 5 , 
     strategy = 'b' , 
     sampleReview = sampleReview_b , 
-    reviewRequestCount = 0;
+    reviewRequestCount = 0 ;
+
+const cleanup = () => {
+    if( logStream ) { logStream.end(); logStream = undefined; }
+};
+
+// do app specific cleaning before exiting
+process.on('exit', () => ( cleanup() ) );
+
+// catch ctrl+c event and exit normally
+process.on('SIGINT', () => ( cleanup() ) );
+
+//catch uncaught exceptions, trace, then exit normally
+process.on( 'uncaughtException' , () => ( cleanup() ) );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
@@ -146,6 +187,11 @@ app.post( '/sheet/load' , ( req , res ) => {
             return;
         } else { res.send(); }
 
+        storedSheetId = req.body.spreadsheetId;
+
+        if( logStream ) { logStream.end(); logStream = undefined; }
+        logStream = _fs.createWriteStream( storedSheetId + "." + Date.now() + ".log" , { flags : 'a' } );
+
         // actually load reviews and set counts vector
         reviews = Object.assign( [] , response.data.values );
         counts = new Array( reviews.length );
@@ -194,6 +240,28 @@ app.get( '/get/sample' , ( req , res ) => {
     res.json( [ Math.random() ] ) 
 } ); 
 
+// get a request's IP address. From 
+//
+//      https://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
+//
+const reqIP = ( req ) => {
+    console.log( req.headers )
+    return  ( req.headers 
+                ? ( 'x-forwarded-for' in req.headers 
+                        ? req.headers['x-forwarded-for'].split(',').pop() 
+                        : undefined )
+                : undefined ) || 
+            ( req.connection 
+                ? req.connection.remoteAddress || 
+                    ( req.connection.socket
+                        ? req.connection.socket.remoteAddress 
+                        : undefined )
+                : undefined ) || 
+            ( req.socket 
+                ? req.socket.remoteAddress
+                : undefined );
+}
+
 // get an actual review (requires reviews loaded)
 app.get( '/get/review' , (req,res) => {
 
@@ -204,11 +272,21 @@ app.get( '/get/review' , (req,res) => {
     }
 
     reviewRequestCount += 1;
-    logger( "GET  /get/review request " + reviewRequestCount );
     var R = sampleReview();
+    
     logger( "GET  /get/review request " + reviewRequestCount + " sampled review " + reviews[R][0] );
     res.json( { ReviewId : reviews[R][0] , Product : reviews[R][1] , Rating : reviews[R][2] , Review : reviews[R][3] } );
+
+    var ip = reqIP( req );
+
     counts[R]++;
+
+    logger( logStream.write( ( new Date( Date.now() ).toISOString() )
+                        + "|" + ip 
+                        + "|" + R
+                        + "|" + counts[R]
+                        + "|" + reviewRequestCount
+                        + "\n" ) );
 
 });
 
@@ -221,9 +299,14 @@ app.get( '/counts' , (req,res) => {
 // reset the counts vector, in case we need to run multiple trials (for testing or otherwise)
 // over the same set of reviews. Same effect as reloading the set of reviews. 
 app.post( '/counts/reset' , (req,res) => { 
+
+    if( logStream ) { logStream.end(); logStream = undefined; }
+    logStream = _fs.createWriteStream( storedSheetId + "." + Date.now() + ".log" , { flags : 'a' } );
+
     logger( "POST /counts/reset request " );
     for( var i = 0 ; i < reviews.length ; i++ ) { counts[i] = 0.0; }
     res.send(); 
+
 } );
 
 // naive error post back method
