@@ -39,6 +39,9 @@ const _rng = require( 'rng-js' );
 const _fs = require( 'fs' );
 const { google } = require( 'googleapis' );
 
+// our own samplers
+const _samplers = require( "./samplers.js" ).samplers;
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -75,44 +78,6 @@ const corsOptions = {
 
 const logger = ( s ) => { console.log( ( new Date( Date.now() ).toISOString() ) + " | " + s ); }
 
-const sampleReview_u = function() { 
-    var R = 0 , maxS = -1.0 , tmp = 0.0;
-    counts.forEach( (c,i) => {
-        tmp = Math.random();
-        if( tmp > maxS ) { maxS = tmp; R = i; }
-    } );
-    return R;
-}
-
-var maxCount = 0;
-const sampleReview_b = function() { 
-    var R = 0 , maxS = -1.0 , tmp = 0.0 , localMax = Math.max( maxCount , maxResponsesPerReview );
-    counts.forEach( (c,i) => {
-        if( c > maxCount ) { maxCount = c; }
-        tmp = Math.random() * ( 1.0 - Math.min( 1.0 , c/localMax ) );
-        if( tmp > maxS ) { maxS = tmp; R = i; }
-    } );
-    return R;
-}
-
-const sampleReview_e = function() { 
-    var R = 0 , maxS = -1.0 , tmp = 0.0;
-    counts.forEach( (c,i) => {
-        tmp = Math.exp( - Math.random() * c );
-        if( tmp > maxS ) { maxS = tmp; R = i; }
-    } );
-    return R;
-}
-
-const sampleReview_r = function() { 
-    var R = 0 , maxS = -1.0 , tmp = 0.0;
-    counts.forEach( (c,i) => {
-        tmp = Math.random() / c;
-        if( tmp > maxS ) { maxS = tmp; R = i; }
-    } );
-    return R;
-}
-
 var sheets = undefined , 
     storedSheetId = undefined , 
     logStream = undefined ,
@@ -120,13 +85,18 @@ var sheets = undefined ,
     counts = [] , 
     maxResponsesPerReview = 5 , 
     strategy = 'b' , 
-    sampleReview = sampleReview_b , 
+    sampleReview = undefined , 
     reviewRequestCount = 0 ;
 
+// set the actual sample map
+var sampleReview = _samplers[strategy].smpl;
+var sampleParams = { maxCount : maxResponsesPerReview };
+
 const openlog = () => {
-    logStream = _fs.createWriteStream( process.env.REVIEWSAMPLER_LOG_DIR + "/" 
-                                                + storedSheetId + "." + Date.now() + ".log" , 
-                                            { flags : 'a' } );
+    var logName = ( process.env.REVIEWSAMPLER_LOG_DIR ? process.env.REVIEWSAMPLER_LOG_DIR : "." )
+                     + "/" + storedSheetId + "." + Date.now() + ".log";
+    logger( "Opening log \"" + logName + "\"" );
+    logStream = _fs.createWriteStream( logName , { flags : 'a' } );
 };
 
 const closelog = () => {
@@ -236,33 +206,28 @@ app.post( '/sheet/load' , ( req , res ) => {
 
 // set the sampling strategy
 app.post( '/strategy/:s' , ( req , res ) => {
+
     logger( "POST /strategy request, change to " + req.params.s );
-    switch( req.params.s ) { 
-        case 'u' : strategy = req.params.s; sampleReview = sampleReview_u; break;
-        case 'b' : strategy = req.params.s; sampleReview = sampleReview_b; break;
-        case 'e' : strategy = req.params.s; sampleReview = sampleReview_e; break;
-        case 'r' : strategy = req.params.s; sampleReview = sampleReview_r; break;
-        default : 
-            res.write( "Strategy code " + req.params.s + " not understood. Please use one of 'b', 'u', 'e', 'r'." )
-            res.send( 500 );
-            return;
+
+    if( req.params.s in _samplers ) { 
+        logger( "Changing strategy to " + _samplers[req.params.s].name );
+        strategy = req.params.s;
+        sampleReview = _samplers[strategy].smpl;
+        sampleParams = ( strategy == 'b' ? { maxCount : maxResponsesPerReview } : {} );
+        res.send();
+    } else {
+        res.write( "Strategy code " + req.params.s + " not understood. Please use one of 'b', 'u', 'e', 'r'." )
+        res.send( 500 );
+        return;
     }
-    res.send();
+
 });
 
-// get (text describing) the sampling strategy
+// get (text describing) the sampling strategy... any process can respond
 app.get( '/strategy' , ( req , res ) => {
     logger( "GET  /strategy request" );
-    switch( strategy ) { 
-        case 'u' : res.write( "Set to sample uniformly randomly." ); res.send(); break;
-        case 'b' : res.write( "Set to sample balanced-uniformly, up to a count of " + maxResponsesPerReview + " views." ); res.send(); break;
-        case 'e' : res.write( "Set to sample exponentially randomly, away from large counts." ); res.send(); break;
-        case 'r' : res.write( "Set to sample reciprocally randomly, away from large counts." ); res.send(); break;
-        default : 
-            res.write( "Strategy code " + req.params.s + " not understood." )
-            res.send();
-            break;
-    }
+    res.write( "Strategy: " + _samplers[strategy].name + " (" + strategy + ")\n" + _samplers[strategy].help );
+    res.send();
 });
 
 // get an actual review (requires reviews loaded)
@@ -275,9 +240,12 @@ app.get( '/get/review' , (req,res) => {
     }
 
     reviewRequestCount += 1;
-    var R = sampleReview();
+
+    // actually sample review...
+    var R = sampleReview( counts , sampleParams );
     
     logger( "GET  /get/review request " + reviewRequestCount + " sampled review " + reviews[R][0] );
+
     res.json( { ReviewId : reviews[R][0] , Product : reviews[R][1] , Rating : reviews[R][2] , Review : reviews[R][3] } );
 
     counts[R]++;

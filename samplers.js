@@ -31,10 +31,12 @@ const sampleReview_u = function( counts , params ) {
     return R;
 }
 
+var maxCount = 0;
 const sampleReview_b = function( counts , params ) { 
-    var R = 0 , maxS = -1.0 , tmp = 0.0;
+    var R = 0 , maxS = -1.0 , tmp = 0.0 , localMax = Math.max( maxCount , params.maxCount );
     counts.forEach( (c,i) => {
-        tmp = Math.random() * ( 1.0 - Math.min( 1.0 , c/params.maxCount ) );
+        if( c > maxCount ) { maxCount = c; }
+        tmp = Math.random() * ( 1.0 - Math.min( 1.0 , c/localMax ) );
         if( tmp > maxS ) { maxS = tmp; R = i; }
     } );
     return R;

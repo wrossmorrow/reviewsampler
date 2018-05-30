@@ -1,18 +1,18 @@
 #!/bin/bash 
 # reviewsampler.start
 
-HD=${REVIEWSAMPLER_HOME_DIR:-"./"}
-LD=${REVIEWSAMPLER_LOG_DIR:-"./"}
-if [[ -z ${REVIEWSAMPLER_LOAD_BALANCE} ]] ; then 
-	LB=false 
-else 
-	LB=true
+# home directory and log directory; both default to "./"
+HD=${REVIEWSAMPLER_HOME_DIR:-"."}
+LD=${REVIEWSAMPLER_LOG_DIR:-"."}
+
+# do we load balance? only if the envrionment variable is defined...
+if [[ -z ${REVIEWSAMPLER_LOAD_BALANCE} ]] ; then REVIEWSAMPLER_EXEC=server.js 
+else REVIEWSAMPLER_EXEC=lbserver.js 
 fi
 
+# store a formatted date to 
 T=$( date +"%FT%T" | sed -n 's/:/-/gp' )
-if ${LB} ; then
-	node ${HD}/lbserver.js 2> ${LD}/error-$T.log > ${LD}/info-$T.log & 
-else 
-	node ${HD}/server.js 2> ${LD}/error-$T.log > ${LD}/info-$T.log & 
-fi
+
+# run the server in the background, load balancing if desired, and then store the (root process) PID
+node ${HD}/${REVIEWSAMPLER_EXEC} 2> ${LD}/error-$T.log > ${LD}/info-$T.log &
 echo $! > ${HD}/reviewsampler.pid

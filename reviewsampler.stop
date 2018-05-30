@@ -1,12 +1,16 @@
 #!/bin/bash 
 # reviewsampler.stop
 
-HD=${REVIEWSAMPLER_HOME_DIR:-"./"}
-LD=${REVIEWSAMPLER_LOG_DIR:-"./"}
+# home directory and log directory; both default to "./"
+HD=${REVIEWSAMPLER_HOME_DIR:-"."}
+LD=${REVIEWSAMPLER_LOG_DIR:-"."}
 
+# if the PID file exists, kill the process with that PID 
+# and remove the PID file (not needed anymore)
 if [[ -f ${HD}/reviewsampler.pid ]] ; then 
 	kill $( cat ${HD}/reviewsampler.pid )
 	rm ${HD}/reviewsampler.pid
 fi
 
+# zip-up old logs
 for f in ${LD}/*.log ; do gzip $f ; done
